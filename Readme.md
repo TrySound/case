@@ -112,4 +112,6 @@ svg files minifies and compiles to one `img/sprite.svg` with symbols
 
 You can load it with ajax or use [svg4everybody](https://github.com/jonathantneal/svg4everybody) or [svg-sprite-injector](https://github.com/TrySound/svg-sprite-injector)
 
+***
+
 MIT © [Bogdan Chadkin](mailto:trysound@yandex.ru)
