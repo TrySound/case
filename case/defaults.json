@@ -1,0 +1,7 @@
+{
+  "app": "app",
+  "dst": "public",
+  "server": true,
+  "port": 8080,
+  "open": true
+}
