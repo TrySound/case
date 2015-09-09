@@ -41,7 +41,7 @@ gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
 		.pipe(env.min ? uglify() : noop())
 		.on('error', done)
 		.pipe(!env.min ? sourcemaps.write('.') : noop())
-		.pipe(gulp.dest(conf.dst + '/js'));
+		.pipe(gulp.dest(conf.assets + '/js'));
 });
 
 gulp.task('style:lint', function () {
@@ -79,16 +79,7 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 		]))
 		.on('error', done)
 		.pipe(!env.min ? sourcemaps.write('.') : noop())
-		.pipe(gulp.dest(conf.dst + '/css'));
-});
-
-gulp.task('markup', function (done) {
-	var include = require('gulp-file-include');
-
-	return gulp.src(conf.app + '/markup/[^_]*.html')
-		.pipe(include('//='))
-		.on('error', done)
-		.pipe(gulp.dest(conf.dst));
+		.pipe(gulp.dest(conf.assets + '/css'));
 });
 
 gulp.task('sprite', function (done) {
@@ -115,15 +106,26 @@ gulp.task('sprite', function (done) {
 		}))
 		.on('error', done)
 		.pipe(rename('sprite.svg'))
-		.pipe(gulp.dest(conf.dst + '/img'));
+		.pipe(gulp.dest(conf.assets + '/img'));
 });
 
 gulp.task('image', function () {
 	var changed = require('gulp-changed');
 
 	return gulp.src(conf.app + '/image/**/*.{jpg,png,svg}')
-		.pipe(changed(conf.dst + '/img'))
-		.pipe(gulp.dest(conf.dst + '/img'));
+		.pipe(changed(conf.assets + '/img'))
+		.pipe(gulp.dest(conf.assets + '/img'));
+});
+
+gulp.task('markup', function (done) {
+	var include = require('gulp-file-include');
+	if (conf.markup) {
+		return gulp.src(conf.app + '/markup/[^_]*.html')
+			.pipe(include('//='))
+			.on('error', done)
+			.pipe(gulp.dest(conf.markup));
+	}
+	done();
 });
 
 gulp.task('init', function () {
@@ -134,21 +136,24 @@ gulp.task('init-safe', function () {
 	return require('./case/init-fs')(conf, true);
 });
 
-gulp.task('server', function () {
-	return require('./case/server')(conf.dst, conf.port, conf.open);
+gulp.task('server', function (done) {
+	if (conf.markup && conf.server) {
+		return require('./case/server')(conf.markup, conf.port, conf.open);
+	}
+	done();
 });
 
 gulp.task('clean', function () {
-	return require('del')(conf.dst);
+	return require('del')(conf.assets);
 });
 
 gulp.task('build', env.clean ? ['clean'] : null, function () {
 	var run = require('./case/lib/sequence');
 
 	return run([
+		conf.markup ? 'markup' : null,
 		'script',
 		'style',
-		'markup',
 		'sprite',
 		'image'
 	]);
@@ -158,10 +163,12 @@ gulp.task('dev', function () {
 	var run = require('./case/lib/sequence');
 	var watch = require('./case/lib/watch');
 
-	return run('build', conf.server ? 'server' : null).then(function () {
+	return run('build', conf.markup && conf.server ? 'server' : null).then(function () {
+		if (conf.markup) {
+			watch(conf.app + '/markup/**/*.html', 'markup');
+		}
 		watch(conf.app + '/script/**/*.js', 'script');
 		watch(conf.app + '/style/**/*.css', 'style');
-		watch(conf.app + '/markup/**/*.html', 'markup');
 		watch(conf.app + '/sprite/**/*.svg', 'sprite');
 		watch(conf.app + '/image/**/*.{jpg,png,svg}', 'image');
 	});

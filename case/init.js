@@ -1,3 +1,4 @@
+var path = require('path');
 var pify = require('pify');
 var exists = require('path-exists');
 var del = require('del');
@@ -6,6 +7,7 @@ var writeFile = pify(fs.writeFile);
 var inquirer = require('inquirer');
 var chalk = require('chalk');
 var extend = require('xtend');
+var originalDefaults = require('./defaults');
 
 function prompt(q) {
 	return new Promise(function (resolve) {
@@ -14,73 +16,80 @@ function prompt(q) {
 }
 
 function validateDir(dir) {
-	var done = this.async();
-
-	if (!/^[a-zA-Z0-9._-]+$/.test(dir)) {
-		return done('Directory should contain only `a-zA-Z0-9._-`');
-	}
-
-	done(true);
+	return dir == 0 ? 'Invalid directory' : true;
 }
 
 module.exports = function (defaults) {
 	var conf = extend(defaults);
 
-	return Promise.resolve().then(function () {
-		return prompt([{
-			name: 'app',
-			message: 'Enter source code directory',
-			default: defaults.app,
-			validate: validateDir
-		}]);
-	}).then(function (answers) {
-		conf.app = answers.app;
-		return exists(conf.app);
-	}).then(function (exists) {
-		if (exists) {
-			return prompt([{
-				name: 'override',
-				message: '`' + conf.app + '` already exists, override?',
-				default: false,
-				type: 'confirm'
-			}]);
+	return prompt([{
+		name: 'app',
+		message: 'Enter source code directory',
+		default: defaults.app,
+		validate: validateDir,
+		filter: path.normalize
+	}, {
+		name: 'override',
+		type: 'confirm',
+		message: function (answers) {
+			return '`' + answers.app + '` already exists, override?';
+		},
+		default: false,
+		when: function (answers) {
+			exists(answers.app).then(this.async());
 		}
-		return Promise.resolve({ override: true });
-	}).then(function (answers) {
-		if (answers.override) {
+	}, {
+		name: 'assets',
+		message: 'Enter assets (css, js, img) directory',
+		default: defaults.assets,
+		validate: validateDir,
+		filter: path.normalize
+	}, {
+		name: 'markup',
+		type: 'confirm',
+		message: 'Do you want to process markup?',
+		default: defaults.markup
+	}, {
+		name: 'markup',
+		message: 'Enter markup directory',
+		default: defaults.markup || originalDefaults.markup,
+		when: function (answers) {
+			return answers.markup;
+		},
+		validate: validateDir,
+		filter: path.normalize
+	}, {
+		name: 'server',
+		type: 'confirm',
+		message: 'Do you want to start local server?',
+		default: defaults.server,
+		when: function (answers) {
+			return answers.markup;
+		}
+	}, {
+		name: 'port',
+		message: 'Enter local server port',
+		default: defaults.port,
+		when: function (answers) {
+			return answers.server;
+		}
+	}, {
+		name: 'open',
+		type: 'confirm',
+		message: 'Do you want to open browser on server start?',
+		default: defaults.open,
+		when: function (answers) {
+			return answers.server;
+		}
+	}]).then(function (answers) {
+		conf = extend(conf, answers);
+		delete conf.override;
+		if (answers.override !== false) {
 			return del(conf.app).then(function () {
 				return require('./init-fs')(conf, false);
 			});
 		}
 	}).then(function () {
-		return prompt([{
-			name: 'dst',
-			message: 'Enter destination directory',
-			default: defaults.dst,
-			validate: validateDir
-		}, {
-			name: 'server',
-			message: 'Do you want to start local server?',
-			default: defaults.server,
-			type: 'confirm'
-		}, {
-			name: 'port',
-			message: 'Enter local server port',
-			default: defaults.port,
-			when: function (answers) {
-				return answers.server;
-			}
-		}, {
-			name: 'open',
-			message: 'Do you want to open browser on server start?',
-			default: defaults.open,
-			type: 'confirm',
-			when: function (answers) {
-				return answers.server;
-			}
-		}]);
-	}).then(function (answers) {
-		conf = extend(conf, answers);
 		return writeFile('caseconf.json', JSON.stringify(conf, null, 2) + '\n');
 	}).then(function () {
 		console.log(chalk.green('  Done! ') + 'Configuration saved in `caseconf.json`');
