@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var extend = require('xtend');
-var run = require('./case/lib/sequence');
 var env = require('./case/lib/env');
 var noop = require('./case/lib/noop');
 
@@ -144,6 +143,8 @@ gulp.task('clean', function () {
 });
 
 gulp.task('build', env.clean ? ['clean'] : null, function () {
+	var run = require('./case/lib/sequence');
+
 	return run([
 		'script',
 		'style',
@@ -154,6 +155,7 @@ gulp.task('build', env.clean ? ['clean'] : null, function () {
 });
 
 gulp.task('dev', function () {
+	var run = require('./case/lib/sequence');
 	var watch = require('./case/lib/watch');
 
 	return run('build', conf.server ? 'server' : null).then(function () {
