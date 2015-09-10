@@ -15,8 +15,16 @@ function prompt(q) {
 	});
 }
 
+function filterDir(dir) {
+	return path.normalize(dir).split(path.sep).join('/');
+}
+
 function validateDir(dir) {
-	return dir == 0 ? 'Invalid directory' : true;
+	return dir == 0 || /[?<>:*|"\\]/.test(dir) ? 'Invalid path' : true;
+}
+
+function validatePort(port) {
+	return /^\d{2,5}$/.test(port) || 'Invalid port';
 }
 
 module.exports = function (defaults) {
@@ -27,7 +35,7 @@ module.exports = function (defaults) {
 		message: 'Enter source code directory',
 		default: defaults.app,
 		validate: validateDir,
-		filter: path.normalize
+		filter: filterDir
 	}, {
 		name: 'override',
 		type: 'confirm',
@@ -43,7 +51,7 @@ module.exports = function (defaults) {
 		message: 'Enter assets (css, js, img) directory',
 		default: defaults.assets,
 		validate: validateDir,
-		filter: path.normalize
+		filter: filterDir
 	}, {
 		name: 'markup',
 		type: 'confirm',
@@ -57,7 +65,7 @@ module.exports = function (defaults) {
 			return answers.markup;
 		},
 		validate: validateDir,
-		filter: path.normalize
+		filter: filterDir
 	}, {
 		name: 'server',
 		type: 'confirm',
@@ -72,7 +80,8 @@ module.exports = function (defaults) {
 		default: defaults.port,
 		when: function (answers) {
 			return answers.server;
-		}
+		},
+		validate: validatePort
 	}, {
 		name: 'open',
 		type: 'confirm',
