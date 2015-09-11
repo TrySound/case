@@ -41,7 +41,7 @@
     "postcss-clearfix": "^0.2.0",
     "postcss-import": "^7.0.0",
     "postcss-nested": "^1.0.0",
-    "postcss-pseudo-class-enter": "^1.0.0",
+    "postcss-pseudo-class-enter": "^2.0.1",
     "postcss-reporter": "^1.1.0",
     "readable-stream": "^2.0.2",
     "serve-static": "^1.10.0",

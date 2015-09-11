@@ -69,6 +69,7 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 			}),
 			require('postcss-nested'),
 			require('postcss-clearfix'),
+			require('postcss-pseudo-class-enter'),
 			require('autoprefixer'),
 			env.min ? require('cssnano')({
 				discardComments: { removeAll: true }
