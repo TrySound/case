@@ -27,6 +27,33 @@ Then start the server and watch your sources
 $ gulp dev
 ```
 
+## caseconf.json
+
+**app** *type*: `string`
+
+Source files directory, *default*: `app`
+
+**assets** *type*: `string`
+
+Destination for js, css and img, *default*: `public`
+
+**markup** *type*: `string`, `false`
+
+Destination for markup and directory for server, *default*: `public`
+
+**server** *type*: `boolean`
+
+Enables local server, `markup:false` also disables this feature, *default*: `true`
+
+**port** *type*: `number{2,5}`
+
+Local server port like `localhost:8080`, *default*: `8080`
+
+**open** *type*: `boolean`, `string`
+
+Opens default or specified browser on server start, see [opn](https://github.com/sindresorhus/opn), *default*: `true`
+
+
 ## Commands
 
 ```shell
