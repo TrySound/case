@@ -10,6 +10,7 @@
   "author": "TrySound <trysound@yandex.ru>",
   "license": "MIT",
   "devDependencies": {
+    "acorn": "^1.2.2",
     "autoprefixer": "^6.0.1",
     "browserify": "^11.0.1",
     "chalk": "^1.1.1",
@@ -47,6 +48,7 @@
     "serve-static": "^1.10.0",
     "stylelint": "^1.0.1",
     "svgo": "^0.5.6",
+    "uglify-js": "^2.4.24",
     "xtend": "^4.0.0"
   },
   "repository": {
