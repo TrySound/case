@@ -2,6 +2,14 @@
 
 > Markup builder on gulp without jokes
 
+## Why?
+
+- Cause it's just simple. You have to change only `gulpfile.js` to control your build process.
+- You don't need to change more. It works out of the box.
+- Own sequencer let you process tasks in correct order even with errors.
+- Watcher continue works with thrown errors. And you still have the ability to use CI for testing.
+- You have the ability to customize source and destination directories any time. Just edit `caseconf.json`.
+
 ## Installation
 
 ```shell
