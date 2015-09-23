@@ -67,6 +67,9 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 			require('postcss-import')({
 				path: conf.app + '/style'
 			}),
+			require('postcss-mixins')({
+				mixinsFiles: conf.app + '/style/mixins/*.{js,json}'
+			}),
 			require('postcss-nested'),
 			require('postcss-clearfix'),
 			require('postcss-pseudo-class-enter'),
