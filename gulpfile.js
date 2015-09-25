@@ -14,6 +14,10 @@ try {
 	conf = extend(require('./case/defaults'), conf);
 }
 
+if (conf.markup !== false && typeof conf.markup !== 'string') {
+	conf.markup = conf.assets;
+}
+
 
 gulp.task('script:lint', function (done) {
 	var eslint = require('gulp-eslint');
