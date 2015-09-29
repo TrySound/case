@@ -35,34 +35,52 @@ Then start the server and watch your sources
 $ gulp dev
 ```
 
-## caseconf.json
+### caseconf.json
 
-**app** *type*: `string`
+#### app
 
-Source files directory, *default*: `app`
+Type: `string`
+Default: `app`
 
-**assets** *type*: `string`
+Source files directory.
 
-Destination for js, css and img, *default*: `public`
+#### assets
 
-**markup** *type*: `string`, `false`
+Type: `string`
+Default: `public`
 
-Destination for markup and directory for server, *default*: `public`
+Destination for js, css and img.
 
-**server** *type*: `boolean`
+#### markup
 
-Enables local server, `markup:false` also disables this feature, *default*: `true`
+Type: `boolean`, `string`
+Default: `true`
 
-**port** *type*: `number{2,5}`
+Destination for markup and directory for server. If `true` then will be used assets path.
 
-Local server port like `localhost:8080`, *default*: `8080`
+#### server
 
-**open** *type*: `boolean`, `string`
+Type: `boolean`
+Default: `true`
 
-Opens default or specified browser on server start, see [opn](https://github.com/sindresorhus/opn), *default*: `true`
+Enables local server, `markup:false` also disables this feature.
+
+#### port
+
+Type: `number{2,5}`
+Default: `8080`
+
+Local server port like `localhost:8080`.
+
+#### open
+
+Type: `boolean`, `string`
+Default: `true`
+
+Opens default or specified browser on server start, see [opn](https://github.com/sindresorhus/opn).
 
 
-## Commands
+### Commands
 
 ```shell
 # Creates file structure
@@ -90,7 +108,7 @@ $ gulp sprite
 $ gulp image
 ```
 
-### Flags
+#### Flags
 
 - `--min`, `-m` cssnano for style and uglify for script
 - `--lint`, `-l` stylelint for style and eslint for script

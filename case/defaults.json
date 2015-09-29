@@ -1,7 +1,7 @@
 {
   "app": "app",
   "assets": "public",
-  "markup": "public",
+  "markup": true,
   "server": true,
   "port": 8080,
   "open": true
