@@ -1,6 +1,6 @@
 {
   "name": "case",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Markup builder on gulp without jokes",
   "main": "gulpfile.js",
   "scripts": {

@@ -1,5 +1,3 @@
-root: true
-
 rules:
   semi: [1, 'always']
   semi-spacing: [1]

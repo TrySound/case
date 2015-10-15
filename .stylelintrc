@@ -1,5 +1,3 @@
-root: true
-
 rules:
   block-opening-brace-space-before: [2, 'always']
   block-opening-brace-newline-after: [2, 'always']
