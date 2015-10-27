@@ -3,6 +3,5 @@
   "assets": "public",
   "markup": true,
   "server": true,
-  "port": 8080,
-  "open": true
+  "port": 8080
 }

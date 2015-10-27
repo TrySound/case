@@ -3,17 +3,17 @@ var open = require('opn');
 var serveStatic = require('serve-static');
 var log = require('gulp-util/lib/log');
 var chalk = require('chalk');
+var env = require('./lib/env');
 
-module.exports = function (dir, port, opener) {
+module.exports = function (dir, port) {
 	var host = 'http://localhost:' + port;
-	var opts = typeof opener === 'string' ? { app: opener } : undefined;
 
 	return new Promise(function (resolve) {
 		connect()
 			.use(serveStatic(dir))
 			.listen(port, function () {
-				if (opener) {
-					open(host, opts);
+				if (env.open) {
+					open(host, typeof env.open === 'string' ? { app: env.open } : false);
 				}
 				log('Started server on ' + chalk.cyan(host));
 				resolve();

@@ -82,14 +82,6 @@ module.exports = function (defaults) {
 			return answers.server;
 		},
 		validate: validatePort
-	}, {
-		name: 'open',
-		type: 'confirm',
-		message: 'Do you want to open browser on server start?',
-		default: defaults.open,
-		when: function (answers) {
-			return answers.server;
-		}
 	}]).then(function (answers) {
 		conf = extend(conf, answers);
 		delete conf.override;

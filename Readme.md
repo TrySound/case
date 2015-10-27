@@ -72,13 +72,6 @@ Default: `8080`
 
 Local server port like `localhost:8080`.
 
-#### open
-
-Type: `boolean`, `string`
-Default: `true`
-
-Opens default or specified browser on server start, see [opn](https://github.com/sindresorhus/opn).
-
 
 ### Commands
 
@@ -90,13 +83,13 @@ $ gulp init
 $ gulp init-safe
 
 # Starts server
-$ gulp server
+$ gulp server --open
 
 # Builds public
 $ gulp build --min --lint --clean
 
 # Builds public, starts server and watches for changes
-$ gulp dev --min --lint --clean
+$ gulp dev --min --lint --clean --open
 
 # Partials
 $ gulp script --min --lint
@@ -112,6 +105,7 @@ $ gulp image
 
 - `--min`, `-m` cssnano for style and uglify for script
 - `--lint`, `-l` stylelint for style and eslint for script
+- `--open`, `-o` open site in browser. Works only with enabled server. See [opn](https://github.com/sindresorhus/opn)
 - `--clean` clears dst directory before build
 
 ## Workflow

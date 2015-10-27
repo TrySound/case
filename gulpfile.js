@@ -145,7 +145,7 @@ gulp.task('init-safe', function () {
 
 gulp.task('server', function (done) {
 	if (conf.markup && conf.server) {
-		return require('./case/server')(conf.markup, conf.port, conf.open);
+		return require('./case/server')(conf.markup, conf.port);
 	}
 	done();
 });
