@@ -50,11 +50,10 @@ gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
 
 gulp.task('style:lint', function () {
 	var postcss = require('gulp-postcss');
-	var rc = require('./case/lib/getstylelintrc')();
 
 	return gulp.src(conf.app + '/style/**/*.css')
 		.pipe(postcss([
-			require('stylelint')(rc),
+			require('stylelint'),
 			require('postcss-reporter')({
 				clearMessages: true,
 			})
