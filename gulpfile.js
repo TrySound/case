@@ -74,6 +74,7 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 				mixinsFiles: conf.app + '/style/mixins/*.{js,json}'
 			}),
 			require('postcss-nested'),
+			require('postcss-inline-svg'),
 			require('postcss-clearfix'),
 			require('postcss-pseudo-class-enter'),
 			require('autoprefixer'),
@@ -87,33 +88,6 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 		.on('error', done)
 		.pipe(!env.min ? sourcemaps.write('.') : noop())
 		.pipe(gulp.dest(conf.assets + '/css'));
-});
-
-gulp.task('sprite', function (done) {
-	var svgstore = require('gulp-svgstore');
-	var svgmin = require('gulp-svgmin');
-	var rename = require('gulp-rename');
-
-	return gulp.src(conf.app + '/sprite/**/[^_]*.svg')
-		.pipe(rename({prefix: 'shape-'}))
-		.pipe(svgmin())
-		.on('error', done)
-		.pipe(svgstore({
-			inlineSvg: true
-		}))
-		.on('error', done)
-		.pipe(svgmin({
-			js2svg: {
-				pretty: true,
-				indent: '\t'
-			},
-			plugins: [{
-				cleanupIDs: false
-			}]
-		}))
-		.on('error', done)
-		.pipe(rename('sprite.svg'))
-		.pipe(gulp.dest(conf.assets + '/img'));
 });
 
 gulp.task('image', function () {

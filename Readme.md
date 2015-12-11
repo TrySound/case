@@ -97,7 +97,6 @@ $ gulp script:lint
 $ gulp style --min --lint
 $ gulp style:lint
 $ gulp markup
-$ gulp sprite
 $ gulp image
 ```
 
@@ -129,6 +128,7 @@ Used [postcss](https://github.com/postcss/postcss) modular processor with plugin
 - [postcss-import](https://github.com/postcss/postcss-import)
 - [postcss-mixins](https://github.com/postcss/postcss-mixins)
 - [postcss-nested](https://github.com/postcss/postcss-nested)
+- [postcss-inline-svg](https://github.com/TrySound/postcss-inline-svg)
 - [postcss-clearfix](https://github.com/seaneking/postcss-clearfix)
 - [postcss-pseudo-class-enter](https://github.com/jonathantneal/postcss-pseudo-class-enter)
 
@@ -153,12 +153,6 @@ browserify({
 	]
 })
 ```
-
-### Sprite
-
-svg files minifies and compiles to one `img/sprite.svg` with symbols
-
-You can load it with ajax or use [svg4everybody](https://github.com/jonathantneal/svg4everybody) or [svg-sprite-injector](https://github.com/TrySound/svg-sprite-injector)
 
 ***
 
