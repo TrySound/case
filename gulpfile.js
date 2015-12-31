@@ -31,21 +31,21 @@ gulp.task('script:lint', function (done) {
 });
 
 gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
-	var sourcemaps = require('gulp-sourcemaps');
-	var browserify = require('./case/lib/browserify');
-	var uglify = require('gulp-uglify');
+	var rollup = require('rollup').rollup;
+	var uglify = require('rollup-plugin-uglify');
 
-	return gulp.src(conf.app + '/script/main.js', { read: false })
-		.pipe(browserify({
-			paths: conf.app + '/script',
-			debug: !env.min
-		}))
-		.on('error', done)
-		.pipe(!env.min ? sourcemaps.init({ loadMaps: true }) : noop())
-		.pipe(env.min ? uglify() : noop())
-		.on('error', done)
-		.pipe(!env.min ? sourcemaps.write('.') : noop())
-		.pipe(gulp.dest(conf.assets + '/js'));
+	return rollup({
+		entry: conf.app + '/script/main.js',
+		plugins: [
+			env.min ? uglify() : {}
+		]
+	}).then(function (bundle) {
+		return bundle.write({
+			format: 'iife',
+			sourceMap: !env.min,
+			dest: conf.assets + '/js/main.js'
+		});
+	});
 });
 
 gulp.task('style:lint', function () {

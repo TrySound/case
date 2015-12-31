@@ -142,17 +142,9 @@ postcss([
 
 ### Script
 
-Used [browserify](https://github.com/substack/node-browserify)
+Used [rollup](https://github.com/rollup/rollup) es2015-modules bundler with plugins
 
-You can add transformations as an options in `script` task
-
-```js
-browserify({
-	transform: [
-		require('stringify')(['.tpl'])
-	]
-})
-```
+- [rollup-plugin-uglify](https://github.com/TrySound/rollup-plugin-uglify)
 
 ***
 
