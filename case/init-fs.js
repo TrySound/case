@@ -14,7 +14,6 @@ module.exports = function (conf, safe) {
 		mkdirp(app + '/markup/modules'),
 		mkdirp(app + '/style/shared'),
 		mkdirp(app + '/style/modules'),
-		mkdirp(app + '/style/mixins'),
 		mkdirp(app + '/script/shared'),
 		mkdirp(app + '/script/modules'),
 		mkdirp(app + '/sprite'),

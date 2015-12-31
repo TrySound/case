@@ -126,7 +126,6 @@ You can include files like
 Used [postcss](https://github.com/postcss/postcss) modular processor with plugins
 
 - [postcss-import](https://github.com/postcss/postcss-import)
-- [postcss-mixins](https://github.com/postcss/postcss-mixins)
 - [postcss-nested](https://github.com/postcss/postcss-nested)
 - [postcss-inline-svg](https://github.com/TrySound/postcss-inline-svg)
 - [postcss-clearfix](https://github.com/seaneking/postcss-clearfix)

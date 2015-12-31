@@ -68,9 +68,6 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 		.pipe(!env.min ? sourcemaps.init() : noop())
 		.pipe(postcss([
 			require('postcss-import'),
-			require('postcss-mixins')({
-				mixinsFiles: conf.app + '/style/mixins/*.{js,json}'
-			}),
 			require('postcss-nested'),
 			require('postcss-inline-svg'),
 			require('postcss-clearfix'),
