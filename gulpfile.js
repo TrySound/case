@@ -67,9 +67,7 @@ gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
 	return gulp.src(conf.app + '/style/main.css')
 		.pipe(!env.min ? sourcemaps.init() : noop())
 		.pipe(postcss([
-			require('postcss-import')({
-				path: conf.app + '/style'
-			}),
+			require('postcss-import'),
 			require('postcss-mixins')({
 				mixinsFiles: conf.app + '/style/mixins/*.{js,json}'
 			}),
