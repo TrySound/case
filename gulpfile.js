@@ -94,14 +94,15 @@ gulp.task('image', function () {
 });
 
 gulp.task('markup', function (done) {
-	var include = require('gulp-file-include');
-	if (conf.markup) {
-		return gulp.src(conf.app + '/markup/[^_]*.html')
-			.pipe(include('//='))
-			.on('error', done)
-			.pipe(gulp.dest(conf.markup));
+	if (!conf.markup) {
+		return done();
 	}
-	done();
+	var include = require('gulp-file-include');
+
+	return gulp.src(conf.app + '/markup/[^_]*.html')
+		.pipe(include('//='))
+		.on('error', done)
+		.pipe(gulp.dest(conf.markup));
 });
 
 gulp.task('init', function () {
@@ -113,10 +114,10 @@ gulp.task('init-safe', function () {
 });
 
 gulp.task('server', function (done) {
-	if (conf.markup && conf.server) {
-		return require('./case/server')(conf.markup, conf.port);
+	if (!conf.markup || !conf.server) {
+		return done();
 	}
-	done();
+	return require('./case/server')(conf.markup, conf.port);
 });
 
 gulp.task('clean', function () {
@@ -130,7 +131,6 @@ gulp.task('build', env.clean ? ['clean'] : null, function () {
 		conf.markup ? 'markup' : null,
 		'script',
 		'style',
-		'sprite',
 		'image'
 	]);
 });
@@ -145,7 +145,6 @@ gulp.task('dev', function () {
 		}
 		watch(conf.app + '/script/**/*.js', 'script');
 		watch(conf.app + '/style/**/*.css', 'style');
-		watch(conf.app + '/sprite/**/*.svg', 'sprite');
 		watch(conf.app + '/image/**/*.{jpg,png,svg}', 'image');
 	});
 });

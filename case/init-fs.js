@@ -12,11 +12,8 @@ module.exports = function (conf, safe) {
 
 	return Promise.all([
 		mkdirp(app + '/markup/modules'),
-		mkdirp(app + '/style/shared'),
 		mkdirp(app + '/style/modules'),
-		mkdirp(app + '/script/shared'),
 		mkdirp(app + '/script/modules'),
-		mkdirp(app + '/sprite'),
 		mkdirp(app + '/image')
 	]).then(function () {
 		if (safe) {
