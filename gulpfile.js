@@ -33,10 +33,14 @@ gulp.task('script:lint', function (done) {
 gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
 	var rollup = require('rollup').rollup;
 	var uglify = require('rollup-plugin-uglify');
+	var commonjs = require('rollup-plugin-commonjs');
+	var npm = require('rollup-plugin-npm');
 
 	return rollup({
 		entry: conf.app + '/script/main.js',
 		plugins: [
+			npm(),
+			commonjs(),
 			env.min ? uglify() : {}
 		]
 	}).then(function (bundle) {
