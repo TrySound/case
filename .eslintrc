@@ -6,3 +6,6 @@ rules:
   brace-style: [1, '1tbs', { allowSingleLine: false }]
   space-after-keywords: [1, 'always']
   one-var: [1, 'never']
+
+ecmaFeatures:
+  modules: true
