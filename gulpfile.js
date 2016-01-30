@@ -52,34 +52,35 @@ gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
 	});
 });
 
-gulp.task('style:lint', function () {
-	var postcss = require('gulp-postcss');
-
-	return gulp.src(conf.app + '/style/**/*.css')
-		.pipe(postcss([
-			require('stylelint'),
-			require('postcss-reporter')({
-				clearMessages: true,
-			})
-		]));
-});
-
-gulp.task('style', env.lint ? ['style:lint'] : null, function (done) {
+gulp.task('style', function (done) {
 	var sourcemaps = require('gulp-sourcemaps');
 	var postcss = require('gulp-postcss');
+	var stylelint = env.lint ? require('stylelint') : function () {
+		return function () {};
+	};
+	var cssnano = env.min ? require('cssnano') : function () {
+		return function () {};
+	};
 
 	return gulp.src(conf.app + '/style/main.css')
 		.pipe(!env.min ? sourcemaps.init() : noop())
 		.pipe(postcss([
-			require('postcss-import'),
+			stylelint
+			require('postcss-import')({
+				plugins: [
+					stylelint
+				]
+			}),
 			require('postcss-nested'),
 			require('postcss-inline-svg'),
 			require('postcss-clearfix'),
 			require('postcss-pseudo-class-enter'),
 			require('autoprefixer'),
-			env.min ? require('cssnano')({
-				discardComments: { removeAll: true }
-			}) : function () {},
+			cssnano({
+				discardComments: {
+					removeAll: true
+				}
+			}),
 			require('postcss-reporter')({
 				clearMessages: true,
 			})
