@@ -65,7 +65,7 @@ gulp.task('style', function (done) {
 	return gulp.src(conf.app + '/style/main.css')
 		.pipe(!env.min ? sourcemaps.init() : noop())
 		.pipe(postcss([
-			stylelint
+			stylelint,
 			require('postcss-import')({
 				plugins: [
 					stylelint
