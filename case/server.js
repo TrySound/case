@@ -12,11 +12,13 @@ module.exports = function (dir, port) {
 		connect()
 			.use(serveStatic(dir))
 			.listen(port, function () {
-				if (env.open) {
-					open(host, typeof env.open === 'string' ? { app: env.open } : false);
-				}
 				log('Started server on ' + chalk.cyan(host));
 				resolve();
 			});
+	}).then(function () {
+		var opts = typeof env.open === 'string' ? { app: env.open } : null;
+		if (env.open) {
+			return open(host, opts);
+		}
 	});
 };
