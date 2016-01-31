@@ -93,7 +93,6 @@ $ gulp dev --min --lint --clean --open
 
 # Partials
 $ gulp script --min --lint
-$ gulp script:lint
 $ gulp style --min --lint
 $ gulp markup
 $ gulp image

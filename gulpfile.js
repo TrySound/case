@@ -19,19 +19,9 @@ if (conf.markup !== false && typeof conf.markup !== 'string') {
 }
 
 
-gulp.task('script:lint', function (done) {
-	var eslint = require('gulp-eslint');
-
-	return gulp.src(conf.app + '/script/**/*.js')
-		.pipe(eslint({
-			reset: true,
-		}))
-		.on('error', done)
-		.pipe(eslint.format());
-});
-
-gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
+gulp.task('script', function (done) {
 	var rollup = require('rollup').rollup;
+	var eslint = require('rollup-plugin-eslint');
 	var uglify = require('rollup-plugin-uglify');
 	var commonjs = require('rollup-plugin-commonjs');
 	var npm = require('rollup-plugin-npm');
@@ -39,6 +29,7 @@ gulp.task('script', env.lint ? ['script:lint'] : null, function (done) {
 	return rollup({
 		entry: conf.app + '/script/main.js',
 		plugins: [
+			env.lint ? eslint() : {},
 			npm(),
 			commonjs(),
 			env.min ? uglify() : {}
