@@ -46,20 +46,16 @@ gulp.task('script', function (done) {
 gulp.task('style', function (done) {
 	var sourcemaps = require('gulp-sourcemaps');
 	var postcss = require('gulp-postcss');
-	var stylelint = env.lint ? require('stylelint') : function () {
-		return function () {};
-	};
-	var cssnano = env.min ? require('cssnano') : function () {
-		return function () {};
-	};
+	var stylelint = require('stylelint');
+	var cssnano = require('cssnano');
 
 	return gulp.src(conf.app + '/style/main.css')
 		.pipe(!env.min ? sourcemaps.init() : noop())
 		.pipe(postcss([
-			stylelint,
+			env.lint ? stylelint : function () {},
 			require('postcss-import')({
 				plugins: [
-					stylelint
+					env.lint ? stylelint : function () {}
 				]
 			}),
 			require('postcss-nested'),
@@ -67,11 +63,11 @@ gulp.task('style', function (done) {
 			require('postcss-clearfix'),
 			require('postcss-pseudo-class-enter'),
 			require('autoprefixer'),
-			cssnano({
+			env.min ? cssnano({
 				discardComments: {
 					removeAll: true
 				}
-			}),
+			}) : function () {},
 			require('postcss-reporter')({
 				clearMessages: true,
 			})
