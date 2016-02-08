@@ -7,6 +7,12 @@
     "lint": "eslint gulpfile.js case",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "eslintConfig": {
+    "extends": "eslint-config-postcss/es5"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-case"
+  },
   "author": "TrySound <trysound@yandex.ru>",
   "license": "MIT",
   "devDependencies": {
@@ -16,6 +22,7 @@
     "connect": "^3.4.0",
     "cssnano": "^3.4.0",
     "del": "^2.2.0",
+    "eslint-config-postcss": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-changed": "^1.3.0",
     "gulp-file-include": "^0.13.7",
@@ -42,6 +49,7 @@
     "rollup-plugin-uglify": "^0.1.0",
     "serve-static": "^1.10.0",
     "stylelint": "^4.1.0",
+    "stylelint-config-case": "^0.1.0",
     "xtend": "^4.0.1"
   },
   "repository": {
