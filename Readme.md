@@ -141,7 +141,7 @@ postcss([
 
 Used [rollup](https://github.com/rollup/rollup) es2015-modules bundler with plugins
 
-- [rollup-plugin-npm](https://github.com/rollup/rollup-plugin-npm)
+- [rollup-plugin-node-resolve](https://github.com/rollup/rollup-plugin-node-resolve)
 - [rollup-plugin-commonjs](https://github.com/rollup/rollup-plugin-commonjs)
 - [rollup-plugin-uglify](https://github.com/TrySound/rollup-plugin-uglify)
 

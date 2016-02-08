@@ -24,13 +24,15 @@ gulp.task('script', function (done) {
 	var eslint = require('rollup-plugin-eslint');
 	var uglify = require('rollup-plugin-uglify');
 	var commonjs = require('rollup-plugin-commonjs');
-	var npm = require('rollup-plugin-npm');
+	var nodeResolve = require('rollup-plugin-node-resolve');
 
 	return rollup({
 		entry: conf.app + '/script/main.js',
 		plugins: [
 			env.lint ? eslint() : {},
-			npm(),
+			nodeResolve({
+				jsnext: true
+			}),
 			commonjs(),
 			env.min ? uglify() : {}
 		]
