@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var extend = require('xtend');
 var env = require('./case/lib/env');
-var noop = require('./case/lib/noop');
+var toggleTask = require('./case/lib/toggle-task');
 
 
 var conf;
@@ -19,7 +19,7 @@ if (conf.markup !== false && typeof conf.markup !== 'string') {
 }
 
 
-gulp.task('script', function (done) {
+gulp.task('script', function () {
 	var rollup = require('rollup').rollup;
 	var eslint = require('rollup-plugin-eslint');
 	var uglify = require('rollup-plugin-uglify');
@@ -45,14 +45,15 @@ gulp.task('script', function (done) {
 	});
 });
 
-gulp.task('style', function (done) {
+gulp.task('style', function () {
 	var sourcemaps = require('gulp-sourcemaps');
 	var postcss = require('gulp-postcss');
 	var stylelint = require('stylelint');
 	var cssnano = require('cssnano');
 
-	return gulp.src(conf.app + '/style/main.css')
-		.pipe(!env.min ? sourcemaps.init() : noop())
+	return gulp.src(conf.app + '/style/main.css', {
+			sourcemaps: !env.min
+		})
 		.pipe(postcss([
 			env.lint ? stylelint : function () {},
 			require('postcss-import')({
@@ -74,9 +75,9 @@ gulp.task('style', function (done) {
 				clearMessages: true,
 			})
 		]))
-		.on('error', done)
-		.pipe(!env.min ? sourcemaps.write('.') : noop())
-		.pipe(gulp.dest(conf.assets + '/css'));
+		.pipe(gulp.dest(conf.assets + '/css', {
+			sourcemaps: !env.min && { path: '.' }
+		}));
 });
 
 gulp.task('image', function () {
@@ -87,15 +88,14 @@ gulp.task('image', function () {
 		.pipe(gulp.dest(conf.assets + '/img'));
 });
 
-gulp.task('markup', function (done) {
+gulp.task('markup', function () {
 	if (!conf.markup) {
-		return done();
+		return Promise.resolve();
 	}
 	var include = require('gulp-file-include');
 
 	return gulp.src(conf.app + '/markup/[^_]*.html')
 		.pipe(include('//='))
-		.on('error', done)
 		.pipe(gulp.dest(conf.markup));
 });
 
@@ -107,9 +107,9 @@ gulp.task('init-safe', function () {
 	return require('./case/init-fs')(conf, true);
 });
 
-gulp.task('server', function (done) {
+gulp.task('server', function () {
 	if (!conf.markup || !conf.server) {
-		return done();
+		return Promise.resolve();
 	}
 	return require('./case/server')(conf.markup, conf.port);
 });
@@ -118,29 +118,46 @@ gulp.task('clean', function () {
 	return require('del')(conf.assets);
 });
 
-gulp.task('build', env.clean ? ['clean'] : null, function () {
-	var run = require('./case/lib/sequence');
+gulp.task('build',
+	gulp.series(
+		toggleTask('clean', env.clean),
+		gulp.parallel(
+			toggleTask('markup', conf.markup),
+			'script',
+			'style',
+			'image'
+		)
+	)
+);
 
-	return run([
-		conf.markup ? 'markup' : null,
-		'script',
-		'style',
-		'image'
-	]);
-});
+function watch() {
+	if (conf.markup) {
+		gulp.watch(
+			conf.app + '/markup/**/*.html',
+			gulp.parallel('markup')
+		);
+	}
+	gulp.watch(
+		conf.app + '/script/**/*.js',
+		gulp.parallel('script')
+	);
+	gulp.watch(
+		conf.app + '/style/**/*.css',
+		gulp.parallel('style')
+	);
+	gulp.watch(
+		conf.app + '/image/**/*.{jpg,png,svg}',
+		gulp.parallel('image')
+	);
+	return Promise.resolve();
+}
 
-gulp.task('dev', function () {
-	var run = require('./case/lib/sequence');
-	var watch = require('./case/lib/watch');
+gulp.task('dev',
+	gulp.series(
+		'build',
+		toggleTask('server', conf.markup && conf.server),
+		watch
+	)
+);
 
-	return run('build', conf.markup && conf.server ? 'server' : null).then(function () {
-		if (conf.markup) {
-			watch(conf.app + '/markup/**/*.html', 'markup');
-		}
-		watch(conf.app + '/script/**/*.js', 'script');
-		watch(conf.app + '/style/**/*.css', 'style');
-		watch(conf.app + '/image/**/*.{jpg,png,svg}', 'image');
-	});
-});
-
-gulp.task('default', ['build']);
+gulp.task('default', gulp.parallel('build'));
