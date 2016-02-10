@@ -46,7 +46,6 @@ gulp.task('script', function () {
 });
 
 gulp.task('style', function () {
-	var sourcemaps = require('gulp-sourcemaps');
 	var postcss = require('gulp-postcss');
 	var stylelint = require('stylelint');
 	var cssnano = require('cssnano');
