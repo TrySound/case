@@ -123,11 +123,15 @@ You can include files like
 
 Used [postcss](https://github.com/postcss/postcss) modular processor with plugins
 
+- [stylelint](https://github.com/stylelint/stylelint)
 - [postcss-import](https://github.com/postcss/postcss-import)
 - [postcss-nested](https://github.com/postcss/postcss-nested)
 - [postcss-inline-svg](https://github.com/TrySound/postcss-inline-svg)
 - [postcss-clearfix](https://github.com/seaneking/postcss-clearfix)
 - [postcss-pseudo-class-enter](https://github.com/jonathantneal/postcss-pseudo-class-enter)
+- [autoprefixer](https://github.com/postcss/autoprefixer)
+- [cssnano](https://github.com/ben-eb/cssnano)
+- [postcss-reporter](https://github.com/postcss/postcss-reporter)
 
 You can add any other plugin, just `npm install PLUGIN_NAME -D` and require it to processor list of `style` task
 
@@ -143,7 +147,16 @@ Used [rollup](https://github.com/rollup/rollup) es2015-modules bundler with plug
 
 - [rollup-plugin-node-resolve](https://github.com/rollup/rollup-plugin-node-resolve)
 - [rollup-plugin-commonjs](https://github.com/rollup/rollup-plugin-commonjs)
+- [rollup-plugin-eslint](https://github.com/TrySound/rollup-plugin-eslint)
 - [rollup-plugin-uglify](https://github.com/TrySound/rollup-plugin-uglify)
+
+```js
+rollup({
+	plugins: [
+		require('rollup-plugin-babel')()
+	]
+})
+```
 
 ***
 
