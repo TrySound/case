@@ -91,10 +91,10 @@ gulp.task('markup', function () {
 	if (!conf.markup) {
 		return Promise.resolve();
 	}
-	var include = require('gulp-file-include');
+	var nunjucks = require('gulp-nunjucks');
 
 	return gulp.src(conf.app + '/markup/[^_]*.html')
-		.pipe(include('//='))
+		.pipe(nunjucks.compile())
 		.pipe(gulp.dest(conf.markup));
 });
 

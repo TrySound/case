@@ -109,15 +109,7 @@ $ gulp image
 
 ### Markup
 
-Used [gulp-file-include](https://github.com/coderhaoxin/gulp-file-include) with `//=` prefix
-
-You can include files like
-
-```
-<div class="wrapper">
-	//= include('modules/module.html')
-</div>
-```
+Used [nunjucks](https://github.com/mozilla/nunjucks) templater.
 
 ### Style
 
