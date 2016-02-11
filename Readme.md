@@ -72,13 +72,6 @@ Default: `8080`
 
 Local server port like `localhost:8080`.
 
-#### open
-
-Type: `boolean`, `string`
-Default: `true`
-
-Opens default or specified browser on server start, see [opn](https://github.com/sindresorhus/opn).
-
 
 ### Commands
 
@@ -90,21 +83,18 @@ $ gulp init
 $ gulp init-safe
 
 # Starts server
-$ gulp server
+$ gulp server --open
 
 # Builds public
 $ gulp build --min --lint --clean
 
 # Builds public, starts server and watches for changes
-$ gulp dev --min --lint --clean
+$ gulp dev --min --lint --clean --open
 
 # Partials
 $ gulp script --min --lint
-$ gulp script:lint
 $ gulp style --min --lint
-$ gulp style:lint
 $ gulp markup
-$ gulp sprite
 $ gulp image
 ```
 
@@ -112,31 +102,28 @@ $ gulp image
 
 - `--min`, `-m` cssnano for style and uglify for script
 - `--lint`, `-l` stylelint for style and eslint for script
+- `--open`, `-o` open site in browser. Works only with enabled server. See [opn](https://github.com/sindresorhus/opn)
 - `--clean` clears dst directory before build
 
 ## Workflow
 
 ### Markup
 
-Used [gulp-file-include](https://github.com/coderhaoxin/gulp-file-include) with `//=` prefix
-
-You can include files like
-
-```
-<div class="wrapper">
-	//= include('modules/module.html')
-</div>
-```
+Used [nunjucks](https://github.com/mozilla/nunjucks) templater.
 
 ### Style
 
 Used [postcss](https://github.com/postcss/postcss) modular processor with plugins
 
+- [stylelint](https://github.com/stylelint/stylelint)
 - [postcss-import](https://github.com/postcss/postcss-import)
-- [postcss-mixins](https://github.com/postcss/postcss-mixins)
 - [postcss-nested](https://github.com/postcss/postcss-nested)
+- [postcss-inline-svg](https://github.com/TrySound/postcss-inline-svg)
 - [postcss-clearfix](https://github.com/seaneking/postcss-clearfix)
 - [postcss-pseudo-class-enter](https://github.com/jonathantneal/postcss-pseudo-class-enter)
+- [autoprefixer](https://github.com/postcss/autoprefixer)
+- [cssnano](https://github.com/ben-eb/cssnano)
+- [postcss-reporter](https://github.com/postcss/postcss-reporter)
 
 You can add any other plugin, just `npm install PLUGIN_NAME -D` and require it to processor list of `style` task
 
@@ -148,23 +135,20 @@ postcss([
 
 ### Script
 
-Used [browserify](https://github.com/substack/node-browserify)
+Used [rollup](https://github.com/rollup/rollup) es2015-modules bundler with plugins
 
-You can add transformations as an options in `script` task
+- [rollup-plugin-node-resolve](https://github.com/rollup/rollup-plugin-node-resolve)
+- [rollup-plugin-commonjs](https://github.com/rollup/rollup-plugin-commonjs)
+- [rollup-plugin-eslint](https://github.com/TrySound/rollup-plugin-eslint)
+- [rollup-plugin-uglify](https://github.com/TrySound/rollup-plugin-uglify)
 
 ```js
-browserify({
-	transform: [
-		require('stringify')(['.tpl'])
+rollup({
+	plugins: [
+		require('rollup-plugin-babel')()
 	]
 })
 ```
-
-### Sprite
-
-svg files minifies and compiles to one `img/sprite.svg` with symbols
-
-You can load it with ajax or use [svg4everybody](https://github.com/jonathantneal/svg4everybody) or [svg-sprite-injector](https://github.com/TrySound/svg-sprite-injector)
 
 ***
 

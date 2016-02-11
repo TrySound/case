@@ -1,8 +1,0 @@
-rules:
-  semi: [1, 'always']
-  semi-spacing: [1]
-  quotes: [1, 'single']
-  curly: [1, 'all']
-  brace-style: [1, '1tbs', { allowSingleLine: false }]
-  space-after-keywords: [1, 'always']
-  one-var: [1, 'never']
