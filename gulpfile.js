@@ -4,18 +4,18 @@ var env = require('./case/lib/env');
 var toggleTask = require('./case/lib/toggle-task');
 
 
-var conf;
+var config;
 
 try {
-	conf = require('./caseconf');
+	config = require('./' + env.config);
 } catch(e) {
-	conf = {};
+	config = {};
 } finally {
-	conf = extend(require('./case/defaults'), conf);
+	config = extend(require('./case/defaults'), config);
 }
 
-if (conf.markup !== false && typeof conf.markup !== 'string') {
-	conf.markup = conf.assets;
+if (config.markup !== false && typeof config.markup !== 'string') {
+	config.markup = config.assets;
 }
 
 
@@ -27,7 +27,7 @@ gulp.task('script', function () {
 	var nodeResolve = require('rollup-plugin-node-resolve');
 
 	return rollup({
-		entry: conf.app + '/script/main.js',
+		entry: config.app + '/script/main.js',
 		plugins: [
 			env.lint ? eslint() : {},
 			nodeResolve({
@@ -40,7 +40,7 @@ gulp.task('script', function () {
 		return bundle.write({
 			format: 'iife',
 			sourceMap: !env.min,
-			dest: conf.assets + '/js/main.js'
+			dest: config.assets + '/js/main.js'
 		});
 	});
 });
@@ -50,7 +50,7 @@ gulp.task('style', function () {
 	var stylelint = require('stylelint');
 	var cssnano = require('cssnano');
 
-	return gulp.src(conf.app + '/style/main.css', {
+	return gulp.src(config.app + '/style/main.css', {
 			sourcemaps: !env.min
 		})
 		.pipe(postcss([
@@ -74,7 +74,7 @@ gulp.task('style', function () {
 				clearMessages: true,
 			})
 		]))
-		.pipe(gulp.dest(conf.assets + '/css', {
+		.pipe(gulp.dest(config.assets + '/css', {
 			sourcemaps: !env.min && { path: '.' }
 		}));
 });
@@ -82,46 +82,46 @@ gulp.task('style', function () {
 gulp.task('image', function () {
 	var changed = require('gulp-changed');
 
-	return gulp.src(conf.app + '/image/**/*.{jpg,png,svg}')
-		.pipe(changed(conf.assets + '/img'))
-		.pipe(gulp.dest(conf.assets + '/img'));
+	return gulp.src(config.app + '/image/**/*.{jpg,png,svg}')
+		.pipe(changed(config.assets + '/img'))
+		.pipe(gulp.dest(config.assets + '/img'));
 });
 
 gulp.task('markup', function () {
-	if (!conf.markup) {
+	if (!config.markup) {
 		return Promise.resolve();
 	}
 	var nunjucks = require('gulp-nunjucks');
 
-	return gulp.src(conf.app + '/markup/[^_]*.html')
+	return gulp.src(config.app + '/markup/[^_]*.html')
 		.pipe(nunjucks.compile())
-		.pipe(gulp.dest(conf.markup));
+		.pipe(gulp.dest(config.markup));
 });
 
 gulp.task('init', function () {
-	return require('./case/init')(conf);
+	return require('./case/init')(config);
 });
 
 gulp.task('init-safe', function () {
-	return require('./case/init-fs')(conf, true);
+	return require('./case/init-fs')(config, true);
 });
 
 gulp.task('server', function () {
-	if (!conf.markup || !conf.server) {
+	if (!config.markup || !config.server) {
 		return Promise.resolve();
 	}
-	return require('./case/server')(conf.markup, conf.port);
+	return require('./case/server')(config.markup, config.port);
 });
 
 gulp.task('clean', function () {
-	return require('del')(conf.assets);
+	return require('del')(config.assets);
 });
 
 gulp.task('build',
 	gulp.series(
 		toggleTask('clean', env.clean),
 		gulp.parallel(
-			toggleTask('markup', conf.markup),
+			toggleTask('markup', config.markup),
 			'script',
 			'style',
 			'image'
@@ -130,22 +130,22 @@ gulp.task('build',
 );
 
 function watch() {
-	if (conf.markup) {
+	if (config.markup) {
 		gulp.watch(
-			conf.app + '/markup/**/*.html',
+			config.app + '/markup/**/*.html',
 			gulp.parallel('markup')
 		);
 	}
 	gulp.watch(
-		conf.app + '/script/**/*.js',
+		config.app + '/script/**/*.js',
 		gulp.parallel('script')
 	);
 	gulp.watch(
-		conf.app + '/style/**/*.css',
+		config.app + '/style/**/*.css',
 		gulp.parallel('style')
 	);
 	gulp.watch(
-		conf.app + '/image/**/*.{jpg,png,svg}',
+		config.app + '/image/**/*.{jpg,png,svg}',
 		gulp.parallel('image')
 	);
 	return Promise.resolve();
@@ -154,7 +154,7 @@ function watch() {
 gulp.task('dev',
 	gulp.series(
 		'build',
-		toggleTask('server', conf.markup && conf.server),
+		toggleTask('server', config.markup && config.server),
 		watch
 	)
 );

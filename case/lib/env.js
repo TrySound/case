@@ -4,6 +4,10 @@ module.exports = minimist(process.argv.slice(2), {
 	alias: {
 		m: 'min',
 		l: 'lint',
-		o: 'open'
+		o: 'open',
+		c: 'config'
+	},
+	default: {
+		config: 'caseconfig'
 	}
 });

@@ -7,6 +7,7 @@ var writeFile = pify(fs.writeFile);
 var inquirer = require('inquirer');
 var chalk = require('chalk');
 var extend = require('xtend');
+var env = require('./lib/env');
 var originalDefaults = require('./defaults');
 
 function prompt(q) {
@@ -28,9 +29,14 @@ function validatePort(port) {
 }
 
 module.exports = function (defaults) {
-	var conf = extend(defaults);
+	var configName;
+	var config = extend(defaults);
 
 	return prompt([{
+		name: 'configName',
+		message: 'Enter config name',
+		default: env.config
+	}, {
 		name: 'app',
 		message: 'Enter source code directory',
 		default: defaults.app,
@@ -83,15 +89,17 @@ module.exports = function (defaults) {
 		},
 		validate: validatePort
 	}]).then(function (answers) {
-		conf = extend(conf, answers);
-		delete conf.override;
+		configName = answers.configName;
+		delete answers.configName;
+		config = extend(config, answers);
+		delete config.override;
 		if (answers.override !== false) {
-			return del(conf.app).then(function () {
-				return require('./init-fs')(conf, false);
+			return del(config.app).then(function () {
+				return require('./init-fs')(config, false);
 			});
 		}
 	}).then(function () {
-		return writeFile('caseconf.json', JSON.stringify(conf, null, 2) + '\n');
+		return writeFile(configName + '.json', JSON.stringify(config, null, 2) + '\n');
 	}).then(function () {
 		console.log(chalk.green('  Done! ') + 'Configuration saved in `caseconf.json`');
 	});
