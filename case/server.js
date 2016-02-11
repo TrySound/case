@@ -1,7 +1,7 @@
 var connect = require('connect');
 var open = require('opn');
 var serveStatic = require('serve-static');
-var log = require('gulp-util/lib/log');
+var log = require('gulplog');
 var chalk = require('chalk');
 var env = require('./lib/env');
 
@@ -12,7 +12,7 @@ module.exports = function (dir, port) {
 		connect()
 			.use(serveStatic(dir))
 			.listen(port, function () {
-				log('Started server on ' + chalk.cyan(host));
+				log.info('Started server on ' + chalk.cyan(host));
 				resolve();
 			});
 	}).then(function () {
