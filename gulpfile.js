@@ -75,7 +75,7 @@ gulp.task('style', function () {
 			})
 		]))
 		.pipe(gulp.dest(config.assets + '/css', {
-			sourcemaps: !env.min && { path: '.' }
+			sourcemaps: !env.min && '.'
 		}));
 });
 
