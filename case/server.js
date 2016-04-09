@@ -3,7 +3,7 @@ var open = require('opn');
 var serveStatic = require('serve-static');
 var log = require('gulplog');
 var chalk = require('chalk');
-var env = require('./lib/env');
+var env = require('./env');
 
 module.exports = function (dir, port) {
 	var host = 'http://localhost:' + port;

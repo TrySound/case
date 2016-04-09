@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var extend = require('xtend');
-var env = require('./case/lib/env');
-var toggleTask = require('./case/lib/toggle-task');
+var env = require('./case/env');
 
 
 var config;
@@ -114,14 +113,17 @@ gulp.task('server', function () {
 });
 
 gulp.task('clean', function () {
+	if (!env.clean) {
+		return Promise.resolve();
+	}
 	return require('del')(config.assets);
 });
 
 gulp.task('build',
 	gulp.series(
-		toggleTask('clean', env.clean),
+		'clean',
 		gulp.parallel(
-			toggleTask('markup', config.markup),
+			'markup',
 			'script',
 			'style',
 			'image'
@@ -154,7 +156,7 @@ function watch() {
 gulp.task('dev',
 	gulp.series(
 		'build',
-		toggleTask('server', config.markup && config.server),
+		'server',
 		watch
 	)
 );

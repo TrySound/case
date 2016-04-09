@@ -7,7 +7,7 @@ var writeFile = pify(fs.writeFile);
 var inquirer = require('inquirer');
 var chalk = require('chalk');
 var extend = require('xtend');
-var env = require('./lib/env');
+var env = require('./env');
 var originalDefaults = require('./defaults');
 
 function filterDir(dir) {
