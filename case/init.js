@@ -10,12 +10,6 @@ var extend = require('xtend');
 var env = require('./lib/env');
 var originalDefaults = require('./defaults');
 
-function prompt(q) {
-	return new Promise(function (resolve) {
-		inquirer.prompt(q, resolve);
-	});
-}
-
 function filterDir(dir) {
 	return path.normalize(dir).split(path.sep).join('/');
 }
@@ -32,7 +26,7 @@ module.exports = function (defaults) {
 	var configName;
 	var config = extend(defaults);
 
-	return prompt([{
+	return inquirer.prompt([{
 		name: 'configName',
 		message: 'Enter config name',
 		default: env.config
@@ -50,7 +44,7 @@ module.exports = function (defaults) {
 		},
 		default: false,
 		when: function (answers) {
-			exists(answers.app).then(this.async());
+			return exists(answers.app);
 		}
 	}, {
 		name: 'assets',
