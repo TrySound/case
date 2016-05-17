@@ -29,7 +29,7 @@
     "inquirer": "^1.0.0",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "opn": "^4.0.0",
+    "opn": "^4.0.2",
     "path-exists": "^2.1.0",
     "pify": "^2.3.0",
     "postcss-clearfix": "^1.0.0",
