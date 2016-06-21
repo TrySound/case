@@ -19,7 +19,7 @@
     "chalk": "^1.1.1",
     "connect": "^3.4.1",
     "cssnano": "^3.4.0",
-    "del": "^2.2.0",
+    "del": "^2.2.1",
     "eslint-config-postcss": "^2.0.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-changed": "^1.3.0",
