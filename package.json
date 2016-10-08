@@ -44,7 +44,7 @@
     "rollup-plugin-node-resolve": "^1.4.0",
     "rollup-plugin-uglify": "^0.3.1",
     "serve-static": "^1.10.2",
-    "stylelint": "^5.0.1",
+    "stylelint": "^7.4.0",
     "stylelint-config-case": "^0.1.0",
     "xtend": "^4.0.1"
   },
