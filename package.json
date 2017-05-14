@@ -15,7 +15,7 @@
   "author": "TrySound <trysound@yandex.ru>",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^6.3.1",
+    "autoprefixer": "^7.1.0",
     "chalk": "^1.1.1",
     "connect": "^3.4.1",
     "cssnano": "^3.4.0",
