@@ -42,7 +42,7 @@
     "rollup-plugin-commonjs": "^2.2.1",
     "rollup-plugin-eslint": "^2.0.0",
     "rollup-plugin-node-resolve": "^1.4.0",
-    "rollup-plugin-uglify": "^0.3.1",
+    "rollup-plugin-uglify": "^2.0.1",
     "serve-static": "^1.10.2",
     "stylelint": "^5.0.1",
     "stylelint-config-case": "^0.1.0",
