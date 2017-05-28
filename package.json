@@ -31,7 +31,7 @@
     "mkdirp": "^0.5.1",
     "opn": "^4.0.0",
     "path-exists": "^2.1.0",
-    "pify": "^2.3.0",
+    "pify": "^3.0.0",
     "postcss-clearfix": "^1.0.0",
     "postcss-import": "^8.0.2",
     "postcss-inline-svg": "^1.4.0",
